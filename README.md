@@ -4,68 +4,61 @@ This app allows users to type in annual income and choose with year to calculate
 
 ## The View
 
+![Screen Shot 2023-05-02 at 9 53 34 PM](https://user-images.githubusercontent.com/6887905/235929587-43aad7da-ee63-4c31-852f-21dbf5977a64.png)
+
 # Assumptions
 
 It only calculate the general tax range rates, not based on province or country's scenario.
 
 # Setup
 
-- Added `NEXT_PUBLIC_TAX_API` in `.env.local`
-
+- Add `NEXT_PUBLIC_TAX_API` in `.env.local`
 - Run the app: `yarn dev`
 - Run the test: `yarn test`
 
 # Implementation process
 
-The following steps were taken to improve the app:
+The following steps were taken to develope the app:
 
 - Prioritized tasks
-- Set up the client side separately, with eslint and tailwindcss
-- Implemented a search function on the React client with a new UI
-- Improved search with case-insensitivity and search length limit
-- Improved UI and UX with pagination, improved search API with pagination (see future plan)
-- Added tests, and error messages, and deployed them to render.com
+- Set up simple form
+- Fetch API data
+- write custom hook (useFetch) to fetch data
+- write custom hook (useTax) to calculate the results
+- Add unit tests
+- Improve UI
 
 # Libraries/Tools used
 
 - Uses Nextjs for client
-- Uses Jest for testing
+- Uses react testing library & jest for testing
 - Uses Tailwindcss for UI
 
 # Decisions and tradeoffs
 
-## Pagination or infinite scroll
+## Client side request cache
 
-When listing all items, the two common methods are pagination and infinite scroll. I chose pagination because:
+This app is only developed in the client side. I was thinking to add another api to fetch data and cache the results from there,
+This can be useful if is bigger scopes, so we wont tired the api, can return cached api data for the same request. (Also tax brackets shouldn't change often).
 
-- Infinite scroll may make it hard to find results when there are too many. It may also be less suitable for mobile users.
-- Pagination makes more sense when searching through the script. In real life, users do not start searching from the first page; they usually search by sections.
-- In the future, we can speed up server processing time by giving clear ranges and reducing memory costs.
+But with the smaller scope, I decided to go with useSWR, cache on the client side, that makes me easily fetch data and only revalidate it when the api results change. In the other hand, cache the results from calculation by using useMemo, So when the user chanced only annual income, it won't refetch the api, will only recalculate the results.
 
-## Doing pagination on the client side vs server side
+## Client side browser cache
 
-Initially, I implemented pagination on the server side. However, since the script results are still in a small scope, and every page wouldn't make sense to show too many results (e.g., 1000), it's faster to do it on the client side.
-
-If the scope were to increase in the future, it would make sense to do client and server-side pagination:
-
-For example: If there is a result limitation of 20,000, once the results are higher than 20,000, and a user wants to see more results (by clicking the `next` button), the server would fetch the following 20,000 results
+Consider the user cases of recalculating the results for different incomes and years are rare, I didn't do browser caching. So if the user refresh the app, it won't remember the last results.
 
 # If it was a bigger project
 
 This is a coding challenge and the scope is quite small. If it were a bigger real project, doing the following would be better:
 
-1. Write a script to extract the text and important filter (ex: SCENE, PLACE) and save it in the database
+1. Working on server side caching to reduce the api hit.
 
-- This can extend the search function and results information, ex: show which SENNCE in the title, search `hamlet` in the SENNE I
-
-2. Add cache on the server side
-
-- add a middleware with library ex: `go-cache`
+2. Available years may change in the future, we can also return proper error from the api and updated in the app.
 
 3. UI/UX improvement
 
-- Remember search and results after refreshing the page by adding the search query in the URL or localstorage
+- error messages can be more informative.
 
 4. Increase test coverage for edge cases
 
-5. For a team project, it will be good to have the project dockerized.
+- add end to end test, and retry api tests
