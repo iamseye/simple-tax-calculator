@@ -1,38 +1,71 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Summary
 
-## Getting Started
+This app allows users to type in annual income and choose with year to calculate the text of the year.
 
-First, run the development server:
+## The View
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+# Assumptions
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+It only calculate the general tax range rates, not based on province or country's scenario.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Setup
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Added `NEXT_PUBLIC_TAX_API` in `.env.local`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- Run the app: `yarn dev`
+- Run the test: `yarn test`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Implementation process
 
-## Learn More
+The following steps were taken to improve the app:
 
-To learn more about Next.js, take a look at the following resources:
+- Prioritized tasks
+- Set up the client side separately, with eslint and tailwindcss
+- Implemented a search function on the React client with a new UI
+- Improved search with case-insensitivity and search length limit
+- Improved UI and UX with pagination, improved search API with pagination (see future plan)
+- Added tests, and error messages, and deployed them to render.com
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Libraries/Tools used
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Uses Nextjs for client
+- Uses Jest for testing
+- Uses Tailwindcss for UI
 
-## Deploy on Vercel
+# Decisions and tradeoffs
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Pagination or infinite scroll
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+When listing all items, the two common methods are pagination and infinite scroll. I chose pagination because:
+
+- Infinite scroll may make it hard to find results when there are too many. It may also be less suitable for mobile users.
+- Pagination makes more sense when searching through the script. In real life, users do not start searching from the first page; they usually search by sections.
+- In the future, we can speed up server processing time by giving clear ranges and reducing memory costs.
+
+## Doing pagination on the client side vs server side
+
+Initially, I implemented pagination on the server side. However, since the script results are still in a small scope, and every page wouldn't make sense to show too many results (e.g., 1000), it's faster to do it on the client side.
+
+If the scope were to increase in the future, it would make sense to do client and server-side pagination:
+
+For example: If there is a result limitation of 20,000, once the results are higher than 20,000, and a user wants to see more results (by clicking the `next` button), the server would fetch the following 20,000 results
+
+# If it was a bigger project
+
+This is a coding challenge and the scope is quite small. If it were a bigger real project, doing the following would be better:
+
+1. Write a script to extract the text and important filter (ex: SCENE, PLACE) and save it in the database
+
+- This can extend the search function and results information, ex: show which SENNCE in the title, search `hamlet` in the SENNE I
+
+2. Add cache on the server side
+
+- add a middleware with library ex: `go-cache`
+
+3. UI/UX improvement
+
+- Remember search and results after refreshing the page by adding the search query in the URL or localstorage
+
+4. Increase test coverage for edge cases
+
+5. For a team project, it will be good to have the project dockerized.

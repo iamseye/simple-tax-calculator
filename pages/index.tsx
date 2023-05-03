@@ -52,7 +52,7 @@ export default function Home() {
           Calculate your tax information
         </h1>
         <TaxForm onSubmitTaxForm={onSubmitTaxForm} />
-        {error && <>{error?.message}</>}
+        {error && <div className="text-red-500 mb-4">{error?.message}</div>}
         {isLoading && <Spinner />}
 
         {showResult && (

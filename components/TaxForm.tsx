@@ -37,7 +37,7 @@ const TaxForm = ({ onSubmitTaxForm }: TaxFormType) => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             required
           >
-            <option defaultValue={undefined}>Choose your tax year</option>
+            <option value="">Choose your tax year</option>
             {AVAILABLE_TAX_YEARS.map((year) => (
               <option key={year} value={year}>
                 {year}
