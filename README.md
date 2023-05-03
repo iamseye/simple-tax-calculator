@@ -4,6 +4,9 @@ This app allows users to type in annual income and choose with year to calculate
 
 ## The View
 
+![Screen Shot 2023-05-02 at 9 53 34 PM](https://user-images.githubusercontent.com/6887905/235929587-43aad7da-ee63-4c31-852f-21dbf5977a64.png)
+
+
 # Assumptions
 
 It only calculate the general tax range rates, not based on province or country's scenario.
