@@ -65,7 +65,7 @@ export default function Home() {
               <BracketList taxBrackets={tax.calculatedTaxBrackets} />
             )}
 
-            {tax?.totalTax && (
+            {tax?.totalTax !== null && (
               <div className="flex justify-around mb-4 mt-4 text-lg leading-none tracking-tight text-gray-900 md:text-xl lg:text-3xl">
                 <div>Your total Tax Amount</div>
                 <span className="underline underline-offset-3 decoration-8 decoration-blue-400">

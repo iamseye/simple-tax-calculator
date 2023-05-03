@@ -87,6 +87,7 @@ export const INCOME_150000_TAX_BRACKETS_WITH_MARGIN_AMOUNT_MOCK: TaxBracketWithA
       marginAmount: 0,
     },
     {
+      max: undefined,
       min: 214368,
       rate: 0.33,
       marginAmount: 0,
